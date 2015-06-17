@@ -69,5 +69,77 @@ checkSunk: function(ship){
 
 };		
 
-model.check("00");
+var controller  = {
 
+guess:0,
+
+processGuess: function(guess){
+				var location = parseGuess(guess);
+				if(location){
+					this.guess++;
+					var hits =  model.check(location);
+					if(hits && model.isSunk == model.shipCount)
+					{
+						alert("GAME OVER");
+					}
+				}
+				
+			  }
+
+
+
+};
+
+function parseGuess(guess){
+			var alphabet = ["A","B","C","D","E","F","G"];
+				if(guess == null || guess.length !==2)
+				{
+					alert("Invalid input");
+				}
+				else
+				{
+				
+					var row = alphabet.indexOf(guess.charAt(0));
+					var column = guess.charAt(1);
+					if(isNaN(row) || isNaN(column))
+					{
+						alert("Invalid input");
+					}
+					else if(row < 0 || row > model.gridSize || column < 0 || column > model.gridsize)
+					{
+						alert("Invalid input");
+					}	
+					else
+					{
+						
+						return(row+column);
+					}
+				}
+			return null;
+}
+
+function init(){
+var firebutton = document.getElementById("fireButton");
+firebutton.onclick = firebuttonhandler;
+var guessinput = document.getElementById("guessInput");
+guessinput.onkeypress = keypresshandler
+
+}
+
+function keypresshandler(e){
+	var firebutton = document.getElementById("fireButton");
+	if(e.keyCode == 13)
+	{
+		firebutton.click();
+		return false;
+	}
+}
+function firebuttonhandler(){
+var guessinput = document.getElementById("guessInput");
+var guess = guessinput.value;
+controller.processGuess(guess);
+guessinput.value = "";
+
+}
+
+window.onload= init;
